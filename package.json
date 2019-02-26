@@ -2,10 +2,24 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/easyMake",
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "compression-webpack-plugin": "^2.0.0",
+    "echarts": "^4.2.0-rc.2",
+    "echarts-for-react": "^2.0.15-beta.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "hammerjs": "^2.0.8",
+    "html2canvas": "^1.0.0-alpha.12",
     "react": "^16.6.0",
+    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.6.0",
-    "react-scripts": "2.0.5"
+    "react-redux": "^6.0.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.5",
+    "react-transition-group": "^2.5.0",
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -14,12 +28,27 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-undef": "off",
+      "no-restricted-globals": "off",
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "echarts": "^4.2.0-rc.2",
+    "echarts-for-react": "^2.0.15-beta.0",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.10.0",
+    "react-bootstrap": "^0.32.4",
+    "sass-loader": "^7.1.0",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "webpack-bundle-analyzer": "^3.0.3"
+  }
 }

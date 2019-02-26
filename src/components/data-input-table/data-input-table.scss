@@ -1,0 +1,41 @@
+.data-input-con {
+  width: 100%;
+  overflow: hidden;
+  .label-data-con {
+    background-color: #fff;
+    display: flex;
+    .left-label {
+      flex: 1;
+      text-align: center;
+      div {
+        width: 100%;
+        height: 30px;
+      }
+    }
+    .center-data {
+      padding-bottom: 10px;
+      flex: 5;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      .data-table {
+        text-align: center;
+        .data-item {
+          display: inline-block;
+          width: 60px;
+          height: 30px;
+          input {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #efefef;
+          }
+        }
+      }
+    }
+  }
+  .right-button {
+    >div {
+      display: inline-block;
+      margin: 10px;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.slider-component-con {
+  position: relative;
+  width: 200px;
+  height: 20px;
+  .slider-strip {
+    width: 160px;
+    height: 10px;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+  }
+  .slider-block {
+    width: 10px;
+    height: 20px;
+    border-radius: 2px;
+    position: absolute;
+    top: 0px;
+    cursor: pointer;
+  }
+  .slider-value {
+    position: absolute;
+    right: 0;
+    top: 0px;
+  }
+  .slider-strip-effective {
+    height: 10px;
+    border-radius: 5px 0 0 5px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+  }
+}

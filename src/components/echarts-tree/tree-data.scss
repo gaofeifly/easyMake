@@ -1,0 +1,26 @@
+$themeColor: #ff3366;
+#tree-data-con {
+  width: 100%;
+  min-width: 350px;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  #add-con {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #efefef;
+    padding: 10px;
+    margin-top: 10px;
+    select {
+      margin: 5px;
+    }
+  }
+  .three-column {
+    display: flex;
+    height: 35px;
+    margin-top: 10px;
+    >div {
+      flex: 1;
+    }
+  }
+}

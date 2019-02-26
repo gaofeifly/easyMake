@@ -1,0 +1,21 @@
+.theme-rect-con {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  .top-left-triangle {
+    border: 20px solid #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+  .bottom-right-triangle {
+    border: 20px solid #000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-left-color: transparent;
+    border-top-color: transparent;
+  }
+}

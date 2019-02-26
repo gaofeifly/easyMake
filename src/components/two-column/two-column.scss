@@ -1,0 +1,10 @@
+.two-column-con {
+  display: flex;
+  margin-top: 10px;
+  .left-column,
+  .right-column {
+    >div {
+      min-height: 40px;
+    }
+  }
+}

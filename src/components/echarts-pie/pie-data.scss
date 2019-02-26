@@ -1,0 +1,31 @@
+.data-pie-con {
+  background-color: #fff;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+  .center-data {
+    width: 100%;
+    padding-bottom: 10px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    .data-table {
+      .data-item {
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        input {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #efefef;
+        }
+      }
+    }
+  }
+  .right-button {
+    height: 100%;
+    >div {
+      display: inline-block;
+      margin: 10px;
+    }
+  }
+}

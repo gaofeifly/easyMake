@@ -1,0 +1,45 @@
+$themeColor: #ff3366;
+#echarts-make-con {
+  #echarts-div {
+    padding: 15px;
+    height: 350px;
+    @media only screen and (max-width: 420px) {
+      width: 350px;
+    }
+    width: 470px;
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  #data-div {
+    width: 100%;
+    min-width: 300px;
+    padding: 5px; 
+  }
+  #data-setting-div {
+    margin-top: 10px;
+  }
+  .setting-toast {
+    position: fixed;
+    height: 50px;
+    width: 100px;
+    top: calc(50% - 25px);
+    left: calc(50% - 50px);
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.2);
+    color: $themeColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #custom-back-color-con {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    #custom-back-color-btn {
+      transform: scale(0.7);
+    }
+  }
+}

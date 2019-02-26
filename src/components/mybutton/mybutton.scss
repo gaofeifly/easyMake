@@ -1,0 +1,27 @@
+.my-button-con {
+  min-width: 50px;
+  padding: 0 5px 0 5px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+.my-button-circle {
+  background-color: rgba(180,180,180,.5);
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  animation: butScale .3s linear;
+  border-radius: 50%;
+}
+@keyframes butScale {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(2);
+  }
+}

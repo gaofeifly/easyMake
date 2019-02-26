@@ -1,0 +1,13 @@
+.on-off-btn-con {
+  width: 80px;
+  position: relative;
+  .out-div {
+    transition: all .5s;
+  }
+  .in-div {
+    border-radius: 50%;
+    position: absolute;
+    background-color: #fff;
+    transition: all .3s;
+  }
+}

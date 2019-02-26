@@ -1,0 +1,11 @@
+body {
+  margin: 0 auto;
+}
+.drag-scale-view-con {
+  position: relative;
+  min-width: 300px;
+  min-height: 300px;
+  .drag-scale-view-subcon {
+    position: absolute;
+  }
+}
