@@ -3,6 +3,8 @@ import '../global.js'
 
 const UPDATE_USERNAME = 'UPDATE_USERNAME'
 const DELETE_USERNAME = 'DELETE_USERNAME'
+
+
 function modifyUsername(state = {username: global.getCookie()},action){
   switch(action.type){
     case UPDATE_USERNAME:

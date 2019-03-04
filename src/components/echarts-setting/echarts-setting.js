@@ -52,6 +52,13 @@ export default class EchartsSetting extends React.Component {
   }
   // 向父组件传递配置
   handleSubmitData(){
+    var s = this.state.seriesName
+    for(let i=0;i<s.length;i++){
+      if(s[i].trim() == ''){
+        alert('请设置系列的名称')
+        return
+      }
+    }
     this.props.onSubmitData(this.state)
   }
   // 处理选定序列个数

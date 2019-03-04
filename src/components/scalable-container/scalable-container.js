@@ -22,7 +22,8 @@ export default class ScalableContainer extends React.Component {
         padding: '10px',
         position: 'absolute',
         border: props.isTarget ? '1px solid red' : '1px solid transparent',
-        display: props.isDisplay !== undefined ? 'none' : 'block'
+        display: props.isDisplay !== undefined ? 'none' : 'block',
+        overflow: 'hidden'
       }}>
         {props.children}
       </div>

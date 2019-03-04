@@ -10,8 +10,12 @@
     width: 96%;
   }
   #btn-con {
-    display: flex;
-    justify-content: space-around;
+    overflow: hidden;
+  }
+  #ok-btn, 
+  #save-btn {
+    float: right;
+    margin-right: 10px;
   }
   .text {
     width: 96%;

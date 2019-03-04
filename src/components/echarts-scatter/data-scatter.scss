@@ -1,12 +1,14 @@
 $okBtnBackColor: #66f;
 $okBtnTextColor: #fff;
 #data-scatter-con {
+  background-color: #fff;
   width: 100%;
   max-height: 400px;
   overflow: hidden;
+  padding-left: 10px;
   #center-data {
     padding-bottom: 10px;
-    max-height: 350px;
+    max-height: 320px;
     overflow-x: scroll;
     overflow-y: scroll;
     #data-table {

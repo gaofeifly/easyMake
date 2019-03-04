@@ -538,4 +538,86 @@ function generateOptionScatter(setting,data,highSetting,saveFlag = 0){
     themeIndex: setting.themeIndex,
   }
 }
-export {generateOptionBar,generateOptionLine,generateOptionPie,generateOptionScatter}
+function generateOptionTree(setting,data,highSetting,saveFlag = 0){
+  // highSetting用不上
+  var obj = {
+    l: 'left',
+    r: 'right',
+    t: 'top',
+    b: 'bottom'
+  }
+  var option = {
+    title: {
+      text: setting.title,
+      left: setting.titleX + '%',
+      top: setting.titleY + '%',
+      subtext: setting.subTitle,
+      sublink: setting.titleLink,
+      textStyle: {
+        color: setting.titleColor,
+        fontWeight: 'bold'
+      },
+      subtextStyle: {
+        color: setting.titleColor
+      },
+    },
+    grid: {
+      top: '50',
+      bottom: '50',
+      left: '50',
+      right: '50'
+    },
+    tooltip: {
+      trigger: 'item',
+      triggerOn: 'mousemove'
+    },
+    series: {
+      type: 'tree',
+      data: [data],
+      expandAndCollapse: true,
+      animationDuration: 550,
+      animationDurationUpdate: 750,
+      symbol: setting.symbol,
+      symbolSize: setting.symbolSize || 7,
+      layout: setting.layout || 'orthogonal',
+      orient: setting.orient || 'LR',
+      leaves: {
+        label: {
+          normal: {
+            position: obj[(setting.orient || 'LR').slice(-1).toLowerCase()],
+            color: setting.textColor || '#000'
+          }
+        }
+      },
+      label: {
+        normal: {
+          color: setting.textColor || '#000',
+          position: obj[(setting.orient || 'LR').slice(0,1).toLowerCase()],
+        }
+      },
+      lineStyle: {
+        color: setting.lineColor || '#ccc'
+      }
+    },
+    toolbox: {
+      top: 30,
+      right: 20,
+      show: true,
+      feature: saveFlag == 1 ? {} : {
+        saveAsImage: {}
+      }
+    },
+  }
+  if(setting.backColorFlag){
+    echarts.registerTheme('backColor' + setting.backColor,{
+      backgroundColor: setting.backColor
+    })
+  }
+  return {
+    option: option,
+    backColorFlag: setting.backColorFlag,
+    backColor: setting.backColor,
+    themeIndex: setting.themeIndex,
+  }
+}
+export {generateOptionBar,generateOptionLine,generateOptionPie,generateOptionScatter,generateOptionTree}

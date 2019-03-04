@@ -1,5 +1,3 @@
-import { store } from './store/store'
-
 global.data = {
   isLogin: false
 }
@@ -27,8 +25,6 @@ global.deleteCookie = () => {
   var username = global.getCookie()
   if(username != null){
     document.cookie = 'username=' + username + ',expires=' + exp.toString()
-    store.dispatch({type: 'DELETE_USERNAME'})
-    console.log('logout success')
   }
   global.data.isLogin = false
 }
@@ -40,4 +36,3 @@ global.createArrayFromOneToNum = (num) => {
   }
   return arr
 }
-

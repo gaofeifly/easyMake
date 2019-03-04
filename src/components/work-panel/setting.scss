@@ -1,0 +1,17 @@
+#img-setting-con,
+#text-setting-con {
+  color: #ccc;
+  #upload-img-con {
+    color: #000;
+    background-color: #efefef;
+    border-radius: 5px;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    > img {
+      width: 60px;
+      height: auto;
+    }
+  }
+}

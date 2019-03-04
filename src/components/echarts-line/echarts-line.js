@@ -19,6 +19,7 @@ export default class EchartsLine extends React.Component {
   constructor(props){
     super(props)
     this.onGetData = this.onGetData.bind(this)
+    this.saveData = this.saveData.bind(this)
     this.onGetSetting = this.onGetSetting.bind(this)
     this.onGetHighSetting = this.onGetHighSetting.bind(this)
     this.generateOption = this.generateOption.bind(this)
@@ -57,7 +58,7 @@ export default class EchartsLine extends React.Component {
   saveData(){
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
+      url: "http://www.lgaofei.xyz:8081",
       data: {
         mes: 'saveChart',
         username: store.getState().name.username,
@@ -125,6 +126,7 @@ export default class EchartsLine extends React.Component {
   render(){
     var themes = ['default','light','dark']
     var opt = this.generateOption()
+    this.option = opt
     return(
       <Grid id='echarts-make-con'>
         <h2>折线图</h2>
@@ -139,7 +141,7 @@ export default class EchartsLine extends React.Component {
             <div id='data-setting-div'>
               <Tabs id='tabs' defaultActiveKey={2}>
                 <Tab eventKey={2} title='配置' style={{paddingTop: '10px'}}>
-                  <EchartsSetting onSubmitData={this.onGetSetting} />
+                  <EchartsSetting onSubmitData={this.onGetSetting} onSaveData={this.saveData} />
                 </Tab>
                 <Tab eventKey={1} title='数据'>
                   <div id='data-div'>

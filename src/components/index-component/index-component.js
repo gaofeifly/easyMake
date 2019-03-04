@@ -1,6 +1,8 @@
 import React from 'react'
 import './index-component.scss'
 import $ from 'jquery'
+import 'animate.css'
+import {Grid,Row,Col,Tabs,Tab} from 'react-bootstrap'
 
 export default class IndexComponent extends React.Component{
   constructor(props){
@@ -72,15 +74,31 @@ export default class IndexComponent extends React.Component{
         onTouchMove={this.handleTouchMove} onTouchEnd={this.handleTouchEnd}>
 
         { this.state.pageDisIndex == 0 && <div className='intro-item'>
-          <h1>1</h1>
+          <h2 className='animated fadeInUp intro-title'>无需编程  操作简单  轻松制作各类图表</h2>
+
+          {[1,2,3].map(item => {
+            return <div className='animated rotateInUpLeft img-con' key={item}>
+              <img src={require('../../images/index/' + item + '.JPG')} />
+            </div>
+          })}
         </div> }
 
         { this.state.pageDisIndex == 1 && <div className='intro-item'>
-          <h1>2</h1>
+          <h2 className='animated fadeInUp intro-title'>页面适配三端(工作台仅PC)</h2>
+          {[4,5,6].map(item => {
+            return <div className='animated rotateInUpLeft img-con' key={item}>
+              <img src={require('../../images/index/' + item + '.JPG')} />
+            </div>
+          })}
         </div> }
 
         { this.state.pageDisIndex == 2 && <div className='intro-item'>
-          <h1>3</h1>
+          <h2 className='animated fadeInUp intro-title'>注册登录  保存下载  方便日后查看</h2>
+          {[7,8,9].map(item => {
+            return <div className='animated rotateInUpLeft img-con' key={item}>
+              <img src={require('../../images/index/' + item + '.JPG')} />
+            </div>
+          })}
         </div> }
 
         {/* 右侧圆点 */}
@@ -91,6 +109,7 @@ export default class IndexComponent extends React.Component{
         </div>
 
         {/* 下方箭头 */}
+        { this.state.pageDisIndex < 2 && <img id='bottom-arrow' src={require('../../images/double-arrow.png')} />}
       </div>
     )
   }

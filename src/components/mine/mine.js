@@ -35,8 +35,8 @@ export default class Mine extends React.Component {
   getCharts = () => {
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
-      // url: 'https://localhost:8081',
+      url: "http://www.lgaofei.xyz:8081",
+      // url: 'http://localhost:8081',
       data: {
         mes: 'getChart',
         username: store.getState().name.username,
@@ -63,8 +63,8 @@ export default class Mine extends React.Component {
   getPanelCharts = () => {
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
-      // url: 'https://localhost:8081',
+      url: "http://www.lgaofei.xyz:8081",
+      // url: 'http://localhost:8081',
       data: {
         mes: 'getPanelCharts',
         username: store.getState().name.username,
@@ -96,6 +96,8 @@ export default class Mine extends React.Component {
   }
   logout = () => {
     global.deleteCookie()
+    store.dispatch({type: 'DELETE_USERNAME'})
+    console.log('logout success')
     this.props.history.push('/')
   }
   // 子组件删除图表后将剩下的图表信息传给父组件
@@ -164,8 +166,8 @@ class Charts extends React.Component {
   deleteChart(e){
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
-      // url: 'https://localhost:8081',
+      url: "http://www.lgaofei.xyz:8081",
+      // url: 'http://localhost:8081',
       data: {
         mes: 'deleteChart',
         username: store.getState().name.username,
@@ -242,8 +244,8 @@ class PanelCharts extends React.Component {
   deletePanelChart = (index) => {
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
-      // url: 'https://localhost:8081',
+      url: "http://www.lgaofei.xyz:8081",
+      // url: 'http://localhost:8081',
       data: {
         mes: 'deletePanelChart',
         username: store.getState().name.username,
@@ -298,8 +300,8 @@ class PanelCharts extends React.Component {
               </ScalableContainer>
             })}
             <div className='panel-bottom'>
-              <div className='p-title'>{item.chart_title || '标题'}</div>
-              <div className='p-date'>{item.chart_date || '2019-1-15'}</div>
+              <div className='p-title'>{item.title}</div>
+              <div className='p-date'>{item.date}</div>
               <div className='p-btn-see'>
                 <div onClick={this.seePanelChart.bind(this,i)}><MyButton backColor='#66f' fontColor='#fff' content='查看' /></div>
               </div>

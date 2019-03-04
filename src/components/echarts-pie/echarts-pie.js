@@ -63,7 +63,7 @@ export default class EchartsPie extends React.Component {
   saveData(){
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
+      url: "http://www.lgaofei.xyz:8081",
       data: {
         mes: 'saveChart',
         username: store.getState().name.username,
@@ -135,6 +135,7 @@ export default class EchartsPie extends React.Component {
   render(){
     var themes = ['default','light','dark']
     var opt = this.generateOption()
+    this.option = opt
     return(
       <Grid id='echarts-make-con'>
         <h2>饼图</h2>

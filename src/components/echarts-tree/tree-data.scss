@@ -2,25 +2,67 @@ $themeColor: #ff3366;
 #tree-data-con {
   width: 100%;
   min-width: 350px;
-  max-height: 400px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  #add-con {
-    width: 100%;
-    border-radius: 10px;
-    background-color: #efefef;
-    padding: 10px;
-    margin-top: 10px;
-    select {
-      margin: 5px;
+  height: 400px;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative;
+  .node-line {
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    .node-item {
+      max-width: 65px;
+      max-height: 65px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      cursor: pointer;
     }
   }
-  .three-column {
-    display: flex;
-    height: 35px;
-    margin-top: 10px;
-    >div {
-      flex: 1;
+  #input-box {
+    background-color: #fff;
+    width: 160px;
+    height: 120px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px 2px #ccc;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    > div {
+      height: 40px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+  #btn-con {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 5px;
+    right: 0;
+    >div {
+      width: 60px;
+      margin: 0 auto 10px;
+    }
+  }
+  #delete {
+    width: 80px;
+    height: 40px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 2px #ccc;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    position: fixed;
   }
 }

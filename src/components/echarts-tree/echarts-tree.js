@@ -13,41 +13,80 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/toolbox'
 import $ from 'jquery'
 import { store } from '../../store/store'
-import {generateOptionBar} from '../generate-option/generate-option'
+import {generateOptionTree} from '../generate-option/generate-option'
 
 export default class EchartsLine extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       setting: {
-
+        orient: 'LR'
       },
       data: {
 
-      }
+      },
+      settingToast: false,
+      saveOK: false
     }
   }
-  onGetSetting = () => {
-
+  onGetSetting = (setting) => {
+    this.setState({
+      setting: setting,
+      settingToast: true
+    })
+    setTimeout(() => {
+      this.setState({
+        settingToast: false
+      })
+    },1500)
   }
-  onGetData = () => {
-
+  onGetData = (data) => {
+    this.setState({
+      data: data
+    })
   }
   saveData = () => {
-
+    var that = this
+    $.ajax({
+      url: "http://www.lgaofei.xyz:8081",
+      data: {
+        mes: 'saveChart',
+        username: store.getState().name.username,
+        option: JSON.stringify(that.option) 
+      },
+      dataType: "jsonp",
+      async: true,
+      timeout: 10000,
+      success:function(data){
+        if(data.mes == 'ok'){
+          that.setState({
+            saveOK: true
+          })
+          setTimeout(() => {
+            that.setState({
+              saveOK: false
+            })
+          },1500)
+        }else{
+          alert('保存失败')
+        }
+      },
+      error:function(err){
+        console.log(`have a error is ${JSON.stringify(err)}`)
+        alert('保存失败')
+      }
+    })
   }
   generateOption = () => {
-    return {
-      option: {},
-      backColorFlag: false,
-      backColor: 'rgba(0,0,0,0)',
-      themeIndex: 0
-    }
+    var data = this.state.data
+    var setting = this.state.setting
+    return generateOptionTree(setting,data,{})
   }
 
   render(){
     var themes = ['default','light','dark']
     var opt = this.generateOption()
+    this.option = opt
     return(
       <Grid id='echarts-make-con'>
         <h2>树图</h2>
@@ -62,11 +101,11 @@ export default class EchartsLine extends React.Component {
             <div id='data-setting-div'>
               <Tabs id='tabs' defaultActiveKey={1}>
                 <Tab eventKey={2} title='配置' style={{paddingTop: '10px'}}>
-                  {/* <TreeSetting onSubmitData={this.onGetSetting} onSaveData={this.saveData} /> */}
+                  <TreeSetting onSubmitData={this.onGetSetting} onSaveData={this.saveData} />
                 </Tab>
                 <Tab eventKey={1} title='数据'>
                   <div id='data-div'>
-                    <TreeData tdNum={this.state.setting.tdNum} seriesName={this.state.setting.seriesName} onUpdateData={this.onGetData}/>
+                    <TreeData onUpdateData={this.onGetData}/>
                   </div>
                 </Tab>
               </Tabs>

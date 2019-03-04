@@ -5,24 +5,36 @@ import MyDropdown from '../dropdown/dropdown'
 import MyButton from '../mybutton/mybutton'
 import 'bootstrap/dist/css/bootstrap.css' 
 import ScalableContainer from '../scalable-container/scalable-container'
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/chart/pie';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/legend';
-import 'echarts/lib/component/markPoint';
-import echarts from 'echarts/lib/echarts';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/chart/scatter'
+import 'echarts/lib/chart/tree'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/legend'
+import 'echarts/lib/component/markPoint'
+import 'echarts/lib/component/markArea'
+import 'echarts/lib/component/markLine'
+import 'echarts/lib/component/visualMap'
+import 'echarts/lib/component/toolbox'
+import echarts from 'echarts/lib/echarts'
+import ReactEchartsCore from 'echarts-for-react/lib/core'
+import TreeData from '../echarts-tree/tree-data'
+import TreeSetting from '../echarts-tree/tree-setting'
 import EchartsSetting from '../echarts-setting/echarts-setting'
 import DataInputTable from '../data-input-table/data-input-table'
 import DataInputTablePie from '../echarts-pie/pie-data'
+import DataInputTableScatter from '../echarts-scatter/data-scatter'
 import EchartsHighSettingBar from '../echarts-bar/echarts-bar-high'
 import EchartsHighSettingLine from '../echarts-line/echarts-line-high'
 import EchartsHighSettingPie from '../echarts-pie/echarts-pie-high'
-import {generateOptionBar,generateOptionLine,generateOptionPie} from '../generate-option/generate-option'
+import EchartsHighSettingScatter from '../echarts-scatter/echarts-scatter-high'
+import {generateOptionBar,generateOptionLine,generateOptionPie, generateOptionScatter,generateOptionTree} from '../generate-option/generate-option'
 import html2canvas from 'html2canvas'
 import '../../global.js'
+import ImgSetting from './img-setting.js'
+import TextSetting from './text-setting.js'
 
 export default class WorkPanel extends React.Component {
   constructor(props){
@@ -72,6 +84,8 @@ export default class WorkPanel extends React.Component {
       currentConIndex: null,
       conArray : [],
       echartsSetting: [],
+      imgSetting: [],
+      textSetting: [],
       echartsData: [],
       echartsHighSetting: [],
       deleteIndexs: [],  // 记录不需要显示的容器下标
@@ -85,14 +99,15 @@ export default class WorkPanel extends React.Component {
       saveFlag: false,
       saveTitle: ''
     }
-    this.leftTags = [{name: '柱形',num: 0},{name: '折线',num: 0},{name: '饼状',num: 0}]
+    this.leftTags = [{name: '柱形',num: 0},{name: '折线',num: 0},{name: '饼状',num: 0},
+      {name: '散点',num: 0},{name: '树状',num: 0},{name: '图片',num: 0},{name: '文字',num: 0}]
     this.options = []
     this.lastArray = []
     this.deleteFlag = false   // 当执行删除图层操作时willUpdate函数中不必记录last各项值
     this.indexForConid = 0
     this.isLogin = false
   }
-  // 设置图片宽度
+  // 设置下载图片的宽度
   setPicWidth = (e) => {
     var v = Number(e.target.value)
     if(v < 20)
@@ -103,7 +118,7 @@ export default class WorkPanel extends React.Component {
       picWidth: v
     })
   }
-  // 设置图片高度
+  // 设置下载图片的高度
   setPicHeight = (e) => {
     var v = Number(e.target.value)
     if(v < 20)
@@ -113,6 +128,74 @@ export default class WorkPanel extends React.Component {
     this.setState({
       picHeight: v
     })
+  }
+  /*
+  将图片和文字的setting也放到echartsSetting里面，否则通过currentConIndex寻找echartsSetting时会报bug
+  同时echartsData和echartsHighSetting也要相应放一个{}占空
+  */
+  // 添加一个图片
+  addAnImg = () => {
+    var s = this.state
+    this.options.push({
+      src: null,
+      style: {
+        width: '180px',
+        height: '180px'
+      }
+    })
+    var arr = s.conArray
+    arr.push({
+      conid: 'sc' + (this.indexForConid + 1),
+      type: 'img',
+      leftIndex: s.leftIndex,
+      name: '图片' + ++this.leftTags[s.leftIndex].num,
+      initWidth: 200,
+      initHeight: 200
+    })
+    this.indexForConid++
+    this.lastArray.push({
+      lastTop: 0,
+      lastLeft : 0,
+      lastWidth: 200,
+      lastHeight: 200
+    })
+    this.setState(prevState => ({
+      conArray: arr,
+      currentConIndex: arr.length - 1,
+      echartsSetting: prevState.echartsSetting.concat({}),
+      echartsData: prevState.echartsData.concat({}),
+      echartsHighSetting: prevState.echartsHighSetting.concat({})
+    }))
+  }
+  // 添加一块文字
+  addAText = () => {
+    var arr = this.state.conArray
+    arr.push({
+      conid: 'sc' + (this.indexForConid + 1),
+      type: 'text',
+      leftIndex: this.state.leftIndex,
+      name: '文字' + ++this.leftTags[this.state.leftIndex].num,
+      initWidth: 150,
+      initHeight: 150
+    })
+    this.indexForConid++
+    this.lastArray.push({
+      lastTop: 0,
+      lastLeft : 0,
+      lastWidth: 150,
+      lastHeight: 150
+    })
+    this.options.push({
+      textContent: '文字ABC',
+      style: {}
+    })
+    this.setState(prevState => ({
+      conArray: arr,
+      currentConIndex: arr.length - 1,
+      echartsSetting: prevState.echartsSetting.concat({}),
+      echartsData: prevState.echartsData.concat({}),
+      echartsHighSetting: prevState.echartsHighSetting.concat({})
+    }))
   }
   // 添加一个图表
   addAChart = () => {
@@ -184,6 +267,38 @@ export default class WorkPanel extends React.Component {
           },
         }
         break
+      case 3:
+        high = {
+          dataLabelShow: true,
+          labelFontSize: 15,
+          itemColor: [],
+          itemColorFlag: false,
+          symbolSize: 1,
+          symbol: 'circle',
+          symbolImgFlag: false,
+          symbolImg: [],
+          visualMapFlag: false,
+          visualMaX: 0,
+          visualMin: 1,
+          visualColor1: '',
+          visualColor2: '',
+          visualTitle: '',
+          regressionFlag: false,
+          splitLineFlag: true,
+          minMaxFlag: false,
+          markLineFlag: false,
+          markLineType: 'solid',
+          markLineNumFlag: false,
+          markLineNum: [],
+          markAreaFlag: false,
+          markAreaNum: {x1: null,x2: null,y1: null,y2: null},
+          markAreaColor: '',
+          regressionType: 'linear'
+        }
+        break
+      case 4:
+        high = {}
+        break
     }
     this.setState(prevState => ({
       conArray: arr,
@@ -233,6 +348,50 @@ export default class WorkPanel extends React.Component {
           }]
         }
         break
+      case 3:
+        option = {
+          xAxis: {},
+          yAxis: {},
+          series: [{
+            symbolSize: 20,
+            data: [
+              [10.0, 8.04],
+              [8.0, 6.95],
+              [13.0, 7.58],
+              [9.0, 8.81],
+              [11.0, 8.33],
+              [14.0, 9.96],
+              [6.0, 7.24],
+              [4.0, 4.26],
+              [12.0, 10.84],
+              [7.0, 4.82],
+              [5.0, 5.68]
+            ],
+            type: 'scatter'
+          }]
+        }
+        break
+      case 4:
+        option = {
+          series: {
+            type: 'tree',
+            data: [{
+              name: 'a',
+              children: [{name: 'b',value: '1',children: []},
+                {name: 'c',value: '1',children: []},
+                {name: 'd',value: '1',children: []}]
+            }],
+            label: {
+              position: 'left'
+            },
+            leaves: {
+              label: {
+                position: 'right'
+              }
+            }
+          }
+        }
+        break
     }
     this.options.push({
       option: option,
@@ -253,14 +412,63 @@ export default class WorkPanel extends React.Component {
     var option = {}
     switch(s.leftIndex){
       case 0:
-        option = generateOptionBar(echartsSetting,s.echartsData[index],s.echartsHighSetting[index])
+        option = generateOptionBar(echartsSetting,s.echartsData[index],s.echartsHighSetting[index],1)
         break
       case 1:
-        option = generateOptionLine(echartsSetting,s.echartsData[index],s.echartsHighSetting[index])
+        option = generateOptionLine(echartsSetting,s.echartsData[index],s.echartsHighSetting[index],1)
         break
       case 2:
-        option = generateOptionPie(echartsSetting,s.echartsData[index],s.echartsHighSetting[index])
+        option = generateOptionPie(echartsSetting,s.echartsData[index],s.echartsHighSetting[index],1)
         break
+      case 3:
+        option = generateOptionScatter(echartsSetting,s.echartsData[index],s.echartsHighSetting[index],1)
+        break
+      case 4:
+        option = generateOptionTree(echartsSetting,s.echartsData[index],s.echartsHighSetting[index],1)
+        break
+    }
+    if(s.currentConIndex !== null){
+      this.options[s.currentConIndex] = option
+    }
+  }
+  // 设置图片的配置项
+  setImgSetting = (imgSetting) => {
+    var s = this.state
+    var arr = s.echartsSetting
+    var index = s.currentConIndex
+    arr[index] = imgSetting
+    this.setState({
+      echartsSetting: arr
+    })
+    var option = {
+      src: imgSetting.src,
+      style: {
+        border: imgSetting.borderWidth + 'px ' + imgSetting.borderStyle  + ' ' + imgSetting.borderColor,
+        width: imgSetting.width + 'px',
+        height: imgSetting.height + 'px',
+        borderRadius: imgSetting.borderRadius + '%'
+      }
+    }
+    if(s.currentConIndex !== null){
+      this.options[s.currentConIndex] = option
+    }
+  }
+  // 设置文字的配置项
+  setTextSetting = (textSetting) => {
+    var s = this.state
+    var arr = s.echartsSetting
+    var index = s.currentConIndex
+    arr[index] = textSetting
+    this.setState({
+      echartsSetting: arr
+    })
+    var option = {
+      style: {
+        fontSize: textSetting.fontSize,
+        fontColor: textSetting.fontColor,
+        fontStyle: textSetting.fontStyle
+      },
+      textContent: textSetting.textContent
     }
     if(s.currentConIndex !== null){
       this.options[s.currentConIndex] = option
@@ -278,13 +486,19 @@ export default class WorkPanel extends React.Component {
     var option = {}
     switch(s.leftIndex){
       case 0:
-        option = generateOptionBar(s.echartsSetting[index],echartsData,s.echartsHighSetting[index])
+        option = generateOptionBar(s.echartsSetting[index],echartsData,s.echartsHighSetting[index],1)
         break
       case 1:
-        option = generateOptionLine(s.echartsSetting[index],echartsData,s.echartsHighSetting[index])
+        option = generateOptionLine(s.echartsSetting[index],echartsData,s.echartsHighSetting[index],1)
         break
       case 2:
-        option = generateOptionPie(s.echartsSetting[index],echartsData,s.echartsHighSetting[index])
+        option = generateOptionPie(s.echartsSetting[index],echartsData,s.echartsHighSetting[index],1)
+        break
+      case 3:
+        option = generateOptionScatter(s.echartsSetting[index],echartsData,s.echartsHighSetting[index],1)
+        break
+      case 4:
+        option = generateOptionTree(s.echartsSetting[index],echartsData,s.echartsHighSetting[index],1)
         break
     }
     if(s.currentConIndex !== null){
@@ -303,17 +517,37 @@ export default class WorkPanel extends React.Component {
     var option = {}
     switch(s.leftIndex){
       case 0:
-        option = generateOptionBar(s.echartsSetting[index],s.echartsData[index],echartsHighSetting)
+        option = generateOptionBar(s.echartsSetting[index],s.echartsData[index],echartsHighSetting,1)
         break
       case 1:
-        option = generateOptionLine(s.echartsSetting[index],s.echartsData[index],echartsHighSetting)
+        option = generateOptionLine(s.echartsSetting[index],s.echartsData[index],echartsHighSetting,1)
         break
       case 2:
-        option = generateOptionPie(s.echartsSetting[index],s.echartsData[index],echartsHighSetting)
+        option = generateOptionPie(s.echartsSetting[index],s.echartsData[index],echartsHighSetting,1)
+        break
+      case 3:
+        option = generateOptionScatter(s.echartsSetting[index],s.echartsData[index],echartsHighSetting,1)
+        break
+      case 4:
+        option = generateOptionTree(s.echartsSetting[index],s.echartsData[index],echartsHighSetting,1)
         break
     }
     if(s.currentConIndex !== null){
       this.options[s.currentConIndex] = option
+    }
+  }
+  // 添加一个容器
+  addSC = () => {
+    var index = this.state.leftIndex
+    if(index == 5){
+      // 图片
+      this.addAnImg()
+    }else if(index == 6){
+      // 文字
+      this.addAText()
+    }else{
+      // echarts
+      this.addAChart()
     }
   }
   // 删除当前选中的容器
@@ -352,7 +586,11 @@ export default class WorkPanel extends React.Component {
       case 'echarts':
         return <ReactEchartsCore echarts={echarts} option={options.option} style={{height: '100%', width: '100%'}}
           theme={options.backColorFlag ? 'backColor' + options.backColor : themes[options.themeIndex]} />
-        break
+      case 'img':
+        return <img src={options.src === null ? require('../../images/cat2.jpg') : options.src}
+          style={options.style} onMouseDown={e => e.preventDefault()} />
+      case 'text': 
+        return <h1 style={options.style}>{options.textContent}</h1>
     }
   }
   // 设置当前的容器下标
@@ -396,7 +634,7 @@ export default class WorkPanel extends React.Component {
   }
   // 新建
   openNew = () => {
-    window.open('https://www.lgaofei.xyz/workPanel')
+    window.open('http://www.lgaofei.xyz/workPanel')
   }
   // 保存
   save = () => {
@@ -408,18 +646,19 @@ export default class WorkPanel extends React.Component {
       var that = this
       var d = new Date()
       $.ajax({
-        // url: "https://www.lgaofei.xyz:8081",
-        url: 'https://localhost:8081',
+        url: "http://www.lgaofei.xyz:8081",
+        // url: 'http://localhost:8081',
         data: {
           mes: 'saveWorkPanel',
           username: this.state.username,
+          // username: 'zzy',
           data: JSON.stringify({
             conArray: that.state.conArray,
             options: that.options,
             lastArray: that.lastArray,
             deleteIndexs: that.state.deleteIndexs,
             backColor: that.state.backColor,
-            date: d.getFullYear + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
+            date: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
             title: that.state.saveTitle
           }) 
         },
@@ -429,7 +668,9 @@ export default class WorkPanel extends React.Component {
         success:function(data){
           if(data.mes == 'ok'){
             that.setState({
-              saveOK: true
+              saveOK: true,
+              saveTitle: '',
+              saveFlag: false
             })
             setTimeout(() => {
               that.setState({
@@ -450,7 +691,7 @@ export default class WorkPanel extends React.Component {
   }
   // 跳转至登录页面或我的页面
   moveToLogin = () => {
-    window.open('https://www.lgaofei.xyz/easyMake')
+    window.open('http://www.lgaofei.xyz/easyMake/')
   }
 
 
@@ -648,6 +889,10 @@ export default class WorkPanel extends React.Component {
     this.div = document.getElementById(idTarget.conid)
   }
   componentDidMount(){
+    var agent = window.navigator.userAgent
+    if(agent.indexOf('Android') > -1 || agent.indexOf('iPad') > -1 || agent.indexOf('iPhone') > -1){
+      alert('您当前使用移动端访问，请使用PC访问')
+    }
     var that = this
     function checkLogin(){
       if(document.cookie.indexOf('Invalid Date') == -1 && document.cookie.indexOf('username=') > -1){
@@ -698,8 +943,13 @@ export default class WorkPanel extends React.Component {
   render(){
     var s = this.state
     var setting = {seriesName: ['系列1'],tdNum: 5,backColor: 'rgba(240,240,240,1)'}
-    var echartsSetting = s.currentConIndex !== null ? s.echartsSetting[s.currentConIndex] : setting
-
+    var echartsSetting
+    if(s.currentConIndex === null || [5,6].indexOf(s.conArray[s.currentConIndex].leftIndex) > -1){
+      echartsSetting = setting
+    }else{
+      echartsSetting = s.echartsSetting[s.currentConIndex]
+      
+    }
     return(
       <div id='work-panel-con'>
         <div id='top-con'>
@@ -735,15 +985,33 @@ export default class WorkPanel extends React.Component {
             </div>
             <div id='right-content'>
               <div id='but-con'>
-                <div onClick={this.addAChart}><MyButton content='添加' /></div>
+                <div onClick={this.addSC}><MyButton content='添加' /></div>
                 <div onClick={this.deleteSC}><MyButton content='删除当前图层' backColor='#ff6666' /></div>
               </div>
               <div id='setting-con'>
                 <MyDropdown dpStyle={1} title='配置'>
                   {s.conArray.map((item,index) => {
-                    return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
-                      <EchartsSetting esStyle={1} fontColor='#ccc' onSubmitData={this.setEchartsSetting} saveHide={true} />
-                    </div>
+                    switch(Number(item.leftIndex)){
+                      case 0:
+                      case 1:
+                      case 2:
+                      case 3:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <EchartsSetting esStyle={1} fontColor='#ccc' onSubmitData={this.setEchartsSetting} saveHide={true} />
+                        </div>
+                      case 4:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <TreeSetting esStyle={1} fontColor='#ccc' onSubmitData={this.setEchartsSetting} saveHide={true} />
+                        </div>
+                      case 5:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <ImgSetting onSubmitData={this.setImgSetting} />
+                        </div>
+                      case 6:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <TextSetting onSubmitData={this.setTextSetting} />
+                        </div>
+                    }
                   })}
                 </MyDropdown>
               </div>
@@ -756,12 +1024,21 @@ export default class WorkPanel extends React.Component {
                         return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
                           <DataInputTable tdNum={echartsSetting.tdNum} seriesName={echartsSetting.seriesName} 
                             onUpdateData={this.setEchartsData} />
-                          </div>
+                        </div>
                       case 2:
                         return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
                           <DataInputTablePie tdNum={echartsSetting.tdNum} seriesName={echartsSetting.seriesName} 
                             onUpdateData={this.setEchartsData} />
-                          </div>
+                        </div>
+                      case 3:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <DataInputTableScatter tdNum={echartsSetting.tdNum} seriesName={echartsSetting.seriesName} 
+                            onUpdateData={this.setEchartsData} />
+                        </div>
+                      case 4:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <TreeData onUpdateData={this.setEchartsData} />
+                        </div>
                     }
                   })}
                 </MyDropdown>
@@ -784,6 +1061,14 @@ export default class WorkPanel extends React.Component {
                         return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
                           <EchartsHighSettingPie esStyle={1} seriesName={echartsSetting.seriesName} tdNum={echartsSetting.tdNum}
                           onSubmitData={this.setEchartsHighSetting}/>
+                        </div>
+                      case 3:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
+                          <EchartsHighSettingScatter esStyle={1} seriesName={echartsSetting.seriesName} tdNum={echartsSetting.tdNum}
+                          onSubmitData={this.setEchartsHighSetting}/>
+                        </div>
+                      case 4:
+                        return <div key={index} style={{display: index == s.currentConIndex ? 'block' : 'none'}}>
                         </div>
                     }
                   })}
@@ -811,6 +1096,7 @@ export default class WorkPanel extends React.Component {
             <input type='text' placeholder='输入图表名称' onChange={(e) => this.setState({saveTitle: e.target.value})} />
             <div onClick={this.save}><MyButton content='确定' /></div>
           </div>}
+          
           <div id='center-con' style={{backgroundColor: s.backColor}}>
             <div id='pic-con' style={{
               backgroundColor: s.backColor,
@@ -840,14 +1126,13 @@ export default class WorkPanel extends React.Component {
               })}
             </MyDropdown>
           </div>
-          <div id='tool-con' style={{height: s.toolFlag ? '100px' : '30px'}}>
+          {/* <div id='tool-con' style={{height: s.toolFlag ? '85px' : '30px'}}>
             <img src={require('../../images/top-arrow-white.png')} 
               style={{transform: s.toolFlag ? 'rotate(180deg)' : 'rotate(0)'}}
               onClick={() => this.setState({toolFlag: !s.toolFlag})} />
             <div>图片</div>
             <div>文字</div>
-            <div>表格</div>
-          </div>
+          </div> */}
         </div>
         {/* 全屏显示 */}
         {s.fullFlag && <div id='full-screen-con' style={{backgroundColor: s.backColor}}>
@@ -865,6 +1150,8 @@ export default class WorkPanel extends React.Component {
         </div>}
         {/* 保存成功 */}
         {s.saveOK && <div id='save-ok'>保存成功</div>}
+
+        {!s.fullFlag && <div id='tip'>更多图表陆续开发中...</div>}
       </div>
     )
   }

@@ -120,18 +120,11 @@ export default class Register extends React.Component {
       loadingDis: true
     })
     var that = this
-    $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
-      // url: 'https://localhost:8081',
-      data: {
-        mes: 'userLogin',
-        username: that.state.usernameLogin,
-        password: that.state.passwordLogin
-      },
-      dataType: 'jsonp',
-      async: true,
-      timeout: 10000,
-      success: (data) => {
+
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.onreadystatechange = function(){
+      if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+        let data = JSON.parse(xmlhttp.responseText)
         // 登录成功
         if(data.mes == 'ok'){
           that.setState({
@@ -148,7 +141,14 @@ export default class Register extends React.Component {
           alert('登录失败')
         }
       }
-    })
+    }
+    // xmlhttp.open("POST","http://localhost:8081",true)
+    xmlhttp.open("POST","http://www.lgaofei.xyz:8081",true)
+    xmlhttp.send(JSON.stringify({
+      mes: 'userLogin',
+      username: that.state.usernameLogin,
+      password: that.state.passwordLogin
+    }))
   }
   // 注册账户请求数据库
   registerAccount = () => {
@@ -170,19 +170,13 @@ export default class Register extends React.Component {
         loadingDis: true
       })
       var that = this
-      $.ajax({
-        url: "https://www.lgaofei.xyz:8081",
-        // url: 'https://localhost:8081',
-        data: {
-          mes: 'addAccount',
-          username: that.state.username,
-          password: that.state.password
-        },
-        dataType: "jsonp",
-        async: true,
-        timeout: 10000,
-        success:function(data){
+
+      var xmlhttp = new XMLHttpRequest()
+      xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+          let data = JSON.parse(xmlhttp.responseText)
           if(data.mes == 'ok'){
+            // 注册成功
             that.setState({
               loginOK: true,
               loadingDis: false
@@ -194,12 +188,19 @@ export default class Register extends React.Component {
             }, 1000);
           }else if(data.mes == 'has username'){
             alert('用户名已存在，换一个试试吧~')
+            that.setState({
+              loadingDis: false
+            })
           }
-        },
-        error:function(err){
-          console.log(`have a error is ${JSON.stringify(err)}`)
         }
-      })
+      }
+      // xmlhttp.open("POST","http://localhost:8081",true)
+      xmlhttp.open("POST","http://www.lgaofei.xyz:8081",true)
+      xmlhttp.send(JSON.stringify({
+        mes: 'addAccount',
+        username: that.state.username,
+        password: that.state.password
+      }))
     }else{
       alert('两次输入的密码不一致')
     }

@@ -234,6 +234,15 @@ $emphasisColor: #fff;
     z-index: 3;
     animation: saveToast .5s linear;
   }
+  #tip {
+    font-size: 10px;
+    color: #aaa;
+    position: fixed;
+    left: 2px;
+    bottom: 10px;
+    width: 30px;
+    height: 60px;
+  }
   @keyframes saveToast {
     0%,100%{
       transform: scale(1);

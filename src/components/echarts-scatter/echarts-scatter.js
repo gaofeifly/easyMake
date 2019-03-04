@@ -46,7 +46,7 @@ export default class EchartsScatter extends React.Component {
   saveData = () => {
     var that = this
     $.ajax({
-      url: "https://www.lgaofei.xyz:8081",
+      url: "http://www.lgaofei.xyz:8081",
       data: {
         mes: 'saveChart',
         username: store.getState().name.username,
@@ -115,6 +115,7 @@ export default class EchartsScatter extends React.Component {
   render(){
     var setting = this.state.setting
     var opt = this.generateOption()
+    this.option = opt
     var themes = ['default','light','dark']
     return(
       <Grid id='echarts-make-con'>
