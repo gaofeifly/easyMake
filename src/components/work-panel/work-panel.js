@@ -896,11 +896,11 @@ export default class WorkPanel extends React.Component {
     var that = this
     function checkLogin(){
       if(document.cookie.indexOf('Invalid Date') == -1 && document.cookie.indexOf('username=') > -1){
-        // console.log('用户登录了')
-        var index = document.cookie.indexOf('username=') > -1
+        console.log('用户登录了')
+        var index = document.cookie.indexOf('username=')
         that.isLogin = true
         that.setState({
-          username : document.cookie.substring(index + 'username='.length).split(',')[0]
+          username : document.cookie.substring(index + 'username='.length).split(';')[0]
         })
       }else{
         that.isLogin = false

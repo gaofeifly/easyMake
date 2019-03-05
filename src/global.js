@@ -5,7 +5,7 @@ global.setCookie = (username) => {
   var time = 60 * 60 * 1000
   var exp = new Date()
   exp.setTime(exp.getTime() + time)
-  document.cookie = 'username=' + username + ',expires=' + exp.toString()
+  document.cookie = 'username=' + username + '; expires=' + exp.toString() + '; path=/; domain=www.lgaofei.xyz'
 }
 global.getCookie = () => {
   global.data.isLogin = false
@@ -14,7 +14,7 @@ global.getCookie = () => {
   var index = document.cookie.indexOf('username=')
   if(index > -1){
     global.data.isLogin = true
-    return document.cookie.substring(index + 'username='.length).split(',')[0]
+    return document.cookie.substring(index + 'username='.length).split(';')[0]
   }else{
     return null
   }
@@ -24,7 +24,7 @@ global.deleteCookie = () => {
   exp.setDate(exp.getTime() - 1)
   var username = global.getCookie()
   if(username != null){
-    document.cookie = 'username=' + username + ',expires=' + exp.toString()
+    document.cookie = 'username=' + username + '; expires=' + exp.toString()
   }
   global.data.isLogin = false
 }

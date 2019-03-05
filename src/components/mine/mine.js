@@ -272,12 +272,13 @@ class PanelCharts extends React.Component {
     var themes = ['default','light','dark']
     switch(type){
       case 'echarts':
-        echarts.registerTheme('backColor' + options.backColor,{
-          backgroundColor: options.backColor
-        })
         return <ReactEchartsCore echarts={echarts} option={options.option} style={{height: '100%', width: '100%'}}
           theme={options.backColorFlag ? 'backColor' + options.backColor : themes[options.themeIndex]} />
-        break
+      case 'img':
+        return <img src={options.src === null ? require('../../images/cat2.jpg') : options.src}
+          style={options.style} onMouseDown={e => e.preventDefault()} />
+      case 'text': 
+        return <h1 style={options.style}>{options.textContent}</h1>
     }
   }
   render(){
